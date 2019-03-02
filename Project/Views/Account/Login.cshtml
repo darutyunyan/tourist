@@ -1,7 +1,13 @@
 ﻿@model Project.Models.Account
+
+@section Title{
+    Tourist | Login
+}
+
 @section HeaderMenu {
     @Html.Partial("HeaderMenu", "Login")
 }
+
 @section Content {
     <div class="container">
         @using (Html.BeginForm())

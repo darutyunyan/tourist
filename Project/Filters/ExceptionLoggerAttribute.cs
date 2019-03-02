@@ -28,7 +28,7 @@ namespace Project.Filters
 
             filterContext.ExceptionHandled = true;
 
-            filterContext.Result = new RedirectResult("Contact");
+            filterContext.Result = new RedirectResult("/Error/NotFound");
         }
     }
 }

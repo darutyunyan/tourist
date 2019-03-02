@@ -3,7 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    @if (IsSectionDefined("Title"))
+    {
+        <title>
+            @RenderSection("Title")
+        </title>
+    }
+    else
+    {
+        <title>Tourist</title>
+    }
+
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
@@ -36,16 +47,12 @@
     @RenderSection("Content", required: false)
      
     <div class="container-fluid mt-20">
-        <p class="text-center">&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        <p class="text-center">&copy; @DateTime.Now.Year - Tourist</p>
     </div>
 
     @* Script code *@
   
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7ZMMLBCvl7qIv55Sk7PAWQCDxYLfzF0g"></script>
-
-    <script>
-        var $qwe = "qweqwe";
-    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
