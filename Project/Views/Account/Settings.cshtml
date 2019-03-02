@@ -1,0 +1,59 @@
+﻿@model Project.ModelView.AccountInformationViewModel
+@using Project.ModelView;
+
+@section HeaderMenu {
+    @Html.Partial("HeaderMenu", "Settings")
+}
+
+@{
+    ChagePasswordViewModel changePasswordViewModel = new ChagePasswordViewModel();
+}
+
+@section Content {
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row context-min-height vcenter">
+                <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-12">
+                    <h3 class="text-center">Account settings</h3>
+                    <div class="row mt-10">
+                        <div class="col-md-6 col-xs-6 col-sm-6">
+                            <button type="button" id="btn-account-information" class="btn btn-success">
+                                ACCOUNT
+                            </button>
+                        </div>
+                        <div class="col-md-6 col-xs-6 col-sm-6">
+                            <button type="button" id="btn-change-password" class="btn btn-success pull-right">
+                                PASSWORD
+                            </button>
+                        </div>
+                    </div>
+                    <div id="setting-error" class="alert alert-danger mt-10 hidden"></div>
+                    <div id="account-information-block" class="block-min-height">
+                        @Html.Partial("AccountInformation")
+                    </div>
+                    <div id="change-password-block" class="hidden block-min-height">
+                        @Html.Partial("ChangePassword", changePasswordViewModel)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        $('#btn-account-information').click(function () {
+            $('#account-information-block').removeClass('hidden');
+            $('#change-password-block').addClass('hidden');
+            $('#btn-account-information').addClass('btn-setting-active');
+            $('#btn-change-password').removeClass('btn-setting-active');
+        });
+
+        $('#btn-change-password').click(function () {
+            $('#account-information-block').addClass('hidden');
+            $('#change-password-block').removeClass('hidden');
+            $('#btn-change-password').addClass('btn-setting-active');
+            $('#btn-account-information').removeClass('btn-setting-active');
+        });
+    </script>
+}

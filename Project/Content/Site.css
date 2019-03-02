@@ -1,0 +1,137 @@
+﻿/* Common styles */
+
+body {
+    font-family: Arial Black,fantasy, Impact !important;
+    margin: 0;
+    padding: 0;
+}
+
+.border-radius-none {
+    border-radius: 0px !important;
+}
+
+.mb-0 {
+    margin-bottom: initial;
+}
+
+.mt-10{
+    margin-top:10px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-50 {
+    margin-top: 50px;
+}
+
+.pt-10{
+    padding-top: 10px;
+}
+
+.pt-20 {
+    padding-top: 20px;
+}
+
+.pt-35 {
+    padding-top: 35px;
+}
+
+.pt-45{
+    padding-top: 45px;
+}
+
+.pl-0 {
+    padding-left: 0 !important;
+}
+
+.pr-10 {
+    padding-right: 10px;
+}
+
+.pr-0 {
+    padding-right: 0 !important;
+}
+
+.text-align-none {
+    text-align: initial !important;
+}
+
+.float-none {
+    float: none !important;
+}
+
+.text-center {
+    text-align: center;
+}
+/* End common styles */
+
+/* Map styles*/
+
+#map {
+    height: 500px !important;
+}
+
+/* End map styles*/
+
+/* Header styles */
+
+.header-pl {
+    padding-left: 50px;
+}
+
+.header-pr {
+    padding-right: 50px;
+}
+
+@media (max-width: 768px) {
+    .header-pl {
+        padding-left: 15px;
+    }
+
+    .header-pr {
+        padding-right: initial;
+    }
+}
+
+.email-style {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+    display: block;
+    color: white;
+}
+
+/* End header styles */
+
+/* Styles for page Settings */
+
+.context-min-height {
+    min-height: 600px !important;
+}
+
+.btn-setting-width {
+    width: 220px !important;
+}
+
+.vcenter {
+    display: flex;
+    align-items: center;
+}
+
+.btn-setting-active {
+    background-color: #36a836;
+}
+
+.block-min-height {
+    min-height: 200px;
+}
+
+
+/* End styles for Settings */
+
+/* Start styles for error field */
+
+
+/* End styles for error field */

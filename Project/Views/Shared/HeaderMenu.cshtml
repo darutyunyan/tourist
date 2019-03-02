@@ -1,0 +1,23 @@
+﻿@model string
+
+<ul class="nav navbar-nav">
+    <li class="@(Model == "Index" ? "active" : null)">@Html.ActionLink("Home", "Index", "Home")</li>
+    <li class="@(Model == "About" ? "active" : null)">@Html.ActionLink("About", "About", "Home")</li>
+    <li class="@(Model == "Contact" ? "active" : null)">@Html.ActionLink("Contact us", "Index", "ContactUs")</li>
+</ul>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <ul class="nav navbar-nav navbar-right header-pr">
+        <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
+        <li class="@(Model == "Settings" ? "active" : null)"><a href="@Url.Action("Settings", "Account")"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+        <li class="@(Model == "SignUp" ? "active" : null)"><a href="@Url.Action("LogOut", "Account")"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right header-pr">
+        <li class="@(Model == "SignUp" ? "active" : null)"><a href="@Url.Action("SignUp", "Account")"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li class="@(Model == "Login" ? "active" : null)"><a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+    </ul>
+}
