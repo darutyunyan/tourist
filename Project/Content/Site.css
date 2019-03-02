@@ -69,7 +69,7 @@ body {
 /* Map styles*/
 
 #map {
-    height: 500px !important;
+    height: 618px !important;
 }
 
 /* End map styles*/
@@ -127,10 +127,20 @@ body {
     min-height: 200px;
 }
 
-
 /* End styles for Settings */
 
-/* Start styles for error field */
+/* Start styles for footer */
 
+.footer-content {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    margin-top: 0;
+    font-weight: bold;
+    height: 60px;
+    font-size: 13px;
+    color: white;
+    background-color: #222222;
+}
 
-/* End styles for error field */
+/* End styles for footer */
