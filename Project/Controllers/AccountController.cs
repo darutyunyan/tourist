@@ -32,18 +32,27 @@ namespace Project.Controllers
                 Account account = null;
                 using (TouristContext db = new TouristContext())
                 {
-                    account = db.Account.FirstOrDefault(a => a.Email == model.Email);
+                    account = db.Accounts.FirstOrDefault(a => a.Email == model.Email);
                 }
                 if (account == null)
                 {
-                    account = new Account { Email = model.Email, Password = model.Password, FirstName = model.FirstName, LastName = model.LastName, Country = model.Country };
+                    account = new Account {
+                        Id = Guid.NewGuid(),
+                        Email = model.Email,
+                        Password = model.Password,
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Country = model.Country
+                    };
+
                     using (TouristContext db = new TouristContext())
                     {
-                        db.Account.Add(account);
+                        db.Accounts.Add(account);
                         db.SaveChanges();
 
-                        account = db.Account.Where(a => a.Email == model.Email && a.Password == model.Password).FirstOrDefault();
+                        account = db.Accounts.Where(a => a.Email == model.Email && a.Password == model.Password).FirstOrDefault();
                     }
+
                     if (account != null)
                     {
                         FormsAuthentication.SetAuthCookie(model.Email, true);
@@ -72,7 +81,7 @@ namespace Project.Controllers
                 Account account = null;
                 using (TouristContext db = new TouristContext())
                 {
-                    account = db.Account.FirstOrDefault(a => a.Email == model.Email && a.Password == model.Password);
+                    account = db.Accounts.FirstOrDefault(a => a.Email == model.Email && a.Password == model.Password);
                 }
                 if (account != null)
                 {
@@ -96,7 +105,7 @@ namespace Project.Controllers
 
             using (TouristContext db = new TouristContext())
             {
-                account = db.Account.FirstOrDefault(a => a.Email == User.Identity.Name);
+                account = db.Accounts.FirstOrDefault(a => a.Email == User.Identity.Name);
 
                 viewModel.FirstName = account.FirstName;
                 viewModel.LastName = account.LastName;
@@ -133,7 +142,7 @@ namespace Project.Controllers
             {
                 using (TouristContext db = new TouristContext())
                 {
-                    Account account = db.Account.FirstOrDefault(a => a.Email == User.Identity.Name);
+                    Account account = db.Accounts.FirstOrDefault(a => a.Email == User.Identity.Name);
 
                     account.FirstName = viewModel.FirstName;
                     account.LastName = viewModel.LastName;
@@ -198,7 +207,7 @@ namespace Project.Controllers
 
             using (TouristContext db = new TouristContext())
             {
-                var account = db.Account.FirstOrDefault(a => a.Email == User.Identity.Name);
+                var account = db.Accounts.FirstOrDefault(a => a.Email == User.Identity.Name);
 
                 if (!string.Equals(account.Password, viewModel.CurrentPassword))
                 {

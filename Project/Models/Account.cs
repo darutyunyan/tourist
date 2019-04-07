@@ -9,21 +9,26 @@ namespace Project.Models
     [Table("Account")]
     public partial class Account
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        [Required(ErrorMessage = "Email is required")]
+        [StringLength(120)]
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
+        [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Password is required")]
+        [StringLength(120)]
         [DataType(DataType.Password)]
+        [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; }
 
+        [StringLength(120)]
         public string FirstName { get; set; }
 
+        [StringLength(120)]
         public string LastName { get; set; }
 
+        [StringLength(120)]
         public string Country { get; set; }
     }
 }

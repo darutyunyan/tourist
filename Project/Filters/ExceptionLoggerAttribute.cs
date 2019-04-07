@@ -22,7 +22,7 @@ namespace Project.Filters
 
             using (TouristContext db = new TouristContext())
             {
-                db.ExceptionDetail.Add(exceptionDetail);
+                db.ExceptionDetails.Add(exceptionDetail);
                 db.SaveChanges();
             }
 

@@ -19,7 +19,7 @@ namespace Project.Controllers
                 ContactUsViewModel viewModel = new ContactUsViewModel();
                 using (TouristContext db = new TouristContext())
                 {
-                    var account = db.Account.FirstOrDefault(a => a.Email == User.Identity.Name);
+                    var account = db.Accounts.FirstOrDefault(a => a.Email == User.Identity.Name);
                     if (account != null)
                     {
                         viewModel.Email = account.Email;

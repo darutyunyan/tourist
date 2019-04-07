@@ -12,8 +12,8 @@ namespace Project.Models
         {
         }
 
-        public virtual DbSet<Account> Account { get; set; }
-        public virtual DbSet<ExceptionDetail> ExceptionDetail { get; set; }
+        public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<ExceptionDetail> ExceptionDetails { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
