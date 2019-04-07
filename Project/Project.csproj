@@ -219,7 +219,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\Attraction.cs" />
+    <Compile Include="Models\City.cs" />
     <Compile Include="Models\ExceptionDetail.cs" />
+    <Compile Include="Models\Route.cs" />
     <Compile Include="Models\Services\Mail.cs" />
     <Compile Include="Models\TouristContext.cs" />
     <Compile Include="ModelView\AccountInformationViewModel.cs" />
