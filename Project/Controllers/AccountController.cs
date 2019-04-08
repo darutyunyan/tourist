@@ -74,7 +74,7 @@ namespace Project.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Account model)
+        public ActionResult Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
