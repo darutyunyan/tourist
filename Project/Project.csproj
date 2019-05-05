@@ -223,7 +223,13 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\ExceptionDetail.cs" />
     <Compile Include="Models\Repository\AccountRepository.cs" />
+    <Compile Include="Models\Repository\AttractionRepository.cs" />
+    <Compile Include="Models\Repository\CityRepository.cs" />
     <Compile Include="Models\Repository\IAccountRepository.cs" />
+    <Compile Include="Models\Repository\IAttractionRepository.cs" />
+    <Compile Include="Models\Repository\ICityRepository.cs" />
+    <Compile Include="Models\Repository\IRouteRepository.cs" />
+    <Compile Include="Models\Repository\RouteRepository.cs" />
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\Services\Mail.cs" />
     <Compile Include="Models\TouristContext.cs" />

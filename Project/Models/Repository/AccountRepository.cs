@@ -8,7 +8,6 @@ namespace Project.Models.Repository
 {
     public class AccountRepository : IAccountRepository
     {
-
         #region Constructor
 
         public AccountRepository(TouristContext touristContext)
