@@ -1,12 +1,16 @@
-﻿/* Common styles */
-
-body {
+﻿body {
     margin: 0;
     padding: 0;
+    min-height: 100%;
+    position: relative;
 }
 
 .border-radius-none {
     border-radius: 0px !important;
+}
+
+.btn:focus{
+    outline:none !important;
 }
 
 .mb-0 {
@@ -106,26 +110,21 @@ body {
 
 /* Styles for page Settings */
 
-.context-min-height {
-    min-height: 600px !important;
-}
+
 
 .btn-setting-width {
     width: 220px !important;
 }
 
-.vcenter {
+/*.vcenter {
     display: flex;
     align-items: center;
-}
+}*/
 
 .btn-setting-active {
     background-color: #36a836;
 }
 
-.block-min-height {
-    min-height: 200px;
-}
 
 /* End styles for Settings */
 
@@ -135,12 +134,14 @@ body {
     background-color: #222;
     margin-top: 0;
     font-weight: bold;
-    height: 70px;
     font-size: 13px;
     color: white;
     border-top: 1px solid #ccc;
     text-align: center;
     line-height: 70px;
+    position:absolute;
+    bottom:0;
+    width:100%;
 }
 
 .footer-text {
@@ -149,3 +150,17 @@ body {
     line-height: normal;
 }
 /* End styles for footer */
+
+
+
+/* Start error validation */
+
+.error-field {
+    color: red;
+}
+
+.error-input {
+    border: 1px red solid;
+}
+
+/* End error validation*/

@@ -8,6 +8,8 @@
 
         void UpdateAccount(Account account);
 
+        bool IsLogged(string email, string password);
+
         Account GetAccountByEmail(string email);
     }
 }

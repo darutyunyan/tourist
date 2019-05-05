@@ -1,9 +1,11 @@
 ﻿using Project.Filters;
 using Project.Models;
+using Project.Models.Repository;
 using Project.ModelView;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +15,13 @@ namespace Project.Controllers
 {
     public class AccountController : Controller
     {
+        public AccountController()
+        {
+            TouristContext dbContect = new TouristContext();
+
+            _accountRepo = new AccountRepository(dbContect);
+        }
+
         #region Action methods
 
         public ActionResult SignUp()
@@ -30,13 +39,14 @@ namespace Project.Controllers
             if (ModelState.IsValid)
             {
                 Account account = null;
-                using (TouristContext db = new TouristContext())
-                {
-                    account = db.Accounts.FirstOrDefault(a => a.Email == model.Email);
-                }
+
+
+                account = this._accountRepo.GetAccountByEmail(model.Email);
+
                 if (account == null)
                 {
-                    account = new Account {
+                    account = new Account
+                    {
                         Id = Guid.NewGuid(),
                         Email = model.Email,
                         Password = model.Password,
@@ -45,15 +55,9 @@ namespace Project.Controllers
                         Country = model.Country
                     };
 
-                    using (TouristContext db = new TouristContext())
-                    {
-                        db.Accounts.Add(account);
-                        db.SaveChanges();
+                    this._accountRepo.AddAccount(account);
 
-                        account = db.Accounts.Where(a => a.Email == model.Email && a.Password == model.Password).FirstOrDefault();
-                    }
-
-                    if (account != null)
+                    if (this._accountRepo.IsLogged(account.Email, account.Password))
                     {
                         FormsAuthentication.SetAuthCookie(model.Email, true);
                         return RedirectToAction("Index", "Home");
@@ -78,12 +82,12 @@ namespace Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                Account account = null;
-                using (TouristContext db = new TouristContext())
-                {
-                    account = db.Accounts.FirstOrDefault(a => a.Email == model.Email && a.Password == model.Password);
-                }
-                if (account != null)
+                bool isAccountLogged = false;
+
+                isAccountLogged = this._accountRepo.IsLogged(model.Email, model.Password);
+
+
+                if (isAccountLogged)
                 {
                     FormsAuthentication.SetAuthCookie(model.Email, true);
                     return RedirectToAction("Index", "Home");
@@ -100,148 +104,173 @@ namespace Project.Controllers
         [HttpGet]
         public ActionResult Settings()
         {
-            Account account = null;
-            AccountInformationViewModel viewModel = new AccountInformationViewModel();
+            AccountInformationViewModel actionResult = null;
 
-            using (TouristContext db = new TouristContext())
+            try
             {
-                account = db.Accounts.FirstOrDefault(a => a.Email == User.Identity.Name);
+                Account account = this._accountRepo.GetAccountByEmail(User.Identity.Name); // exception
 
-                viewModel.FirstName = account.FirstName;
-                viewModel.LastName = account.LastName;
-                viewModel.Country = account.Country;
+                AccountInformationViewModel accountInformation = new AccountInformationViewModel()
+                {
+
+                    FirstName = account.FirstName,
+                    LastName = account.LastName,
+                    Country = account.Country
+                };
+
+
+                actionResult = accountInformation;
             }
-            return View(viewModel);
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            return View(actionResult);
         }
 
         [HttpPost]
-        public JsonResult ChangeAccountInformation(AccountInformationViewModel viewModel)
+        public ActionResult ChangeAccountInformation(AccountInformationViewModel viewModel)
         {
-            JsonResult jSon = new JsonResult()
+            Debug.Assert(!string.IsNullOrEmpty(viewModel.FirstName));
+            Debug.Assert(!string.IsNullOrEmpty(viewModel.LastName));
+            Debug.Assert(!string.IsNullOrEmpty(viewModel.Country));
+
+            JsonResult jsonResult = new JsonResult()
             {
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 ContentType = "application/json"
             };
 
-            List<string> listErrors = new List<string>();
-
-            // Check on required
-            if (string.IsNullOrEmpty(viewModel.FirstName))
+            if (TryUpdateModel(viewModel))
             {
-                listErrors.Add("First name is required");
-            }
-            if (string.IsNullOrEmpty(viewModel.LastName))
-            {
-                listErrors.Add("Last name is required");
-            }
-            if (string.IsNullOrEmpty(viewModel.Country))
-            {
-                listErrors.Add("Country is required");
-            }
-            if (!listErrors.Any())
-            {
-                using (TouristContext db = new TouristContext())
+                try
                 {
-                    Account account = db.Accounts.FirstOrDefault(a => a.Email == User.Identity.Name);
+                    Account account = this._accountRepo.GetAccountByEmail(User.Identity.Name);
 
                     account.FirstName = viewModel.FirstName;
                     account.LastName = viewModel.LastName;
                     account.Country = viewModel.Country;
-                    db.Entry(account).State = EntityState.Modified;
-                    db.SaveChanges();
+                    
+                    this._accountRepo.UpdateAccount(account);
+
+                    jsonResult.Data = new
+                    {
+                        IsError = false
+                    };
+                }
+                catch (Exception ex)
+                {
+                    jsonResult.Data = new
+                    {
+                        IsExceptionError = true,
+                        ErrorMessage = ex.Message
+                    };
                 }
             }
             else
             {
-                jSon.Data = new
+                ModelState modelState;
+
+                string firstNameError = null;
+                string lastNameError = null;
+                string counrtyError = null;
+
+                ViewData.ModelState.TryGetValue("FirstName", out modelState);
+                if (modelState.Errors.Count > 0)
+                    firstNameError = modelState.Errors[0].ErrorMessage;
+
+                ViewData.ModelState.TryGetValue("LastName", out modelState);
+                if (modelState.Errors.Count > 0)
+                    lastNameError = modelState.Errors[0].ErrorMessage;
+
+                ViewData.ModelState.TryGetValue("Country", out modelState);
+                if (modelState.Errors.Count > 0)
+                    counrtyError = modelState.Errors[0].ErrorMessage;
+
+                jsonResult.Data = new
                 {
                     IsError = true,
-                    ErrorMessage = listErrors
+                    FirstNameError = firstNameError,
+                    LastNameError = lastNameError,
+                    CountryError = counrtyError
                 };
-                return jSon;
             }
 
-            jSon.Data = new
-            {
-                IsEror = false
-            };
-
-            return jSon;
+            return jsonResult;
         }
+
+
         [HttpPost]
-        public JsonResult ChangePassword(ChagePasswordViewModel viewModel)
+        public ActionResult ChangePassword(ChagePasswordViewModel viewModel)
         {
-            JsonResult jSon = new JsonResult()
+            Debug.Assert(!string.IsNullOrEmpty(viewModel.CurrentPassword));
+            Debug.Assert(!string.IsNullOrEmpty(viewModel.NewPassword));
+            Debug.Assert(!string.IsNullOrEmpty(viewModel.NewPasswordConfirm));
+
+            JsonResult jsonResult = new JsonResult()
             {
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet,
                 ContentType = "application/json"
             };
-
-            List<string> listErrors = new List<string>();
-
-            // Check on required
-            _checkForEmpty(viewModel, ref listErrors);
-
-            if (listErrors.Any())
+            if (TryUpdateModel(viewModel))
             {
-                jSon.Data = new
+                try
                 {
-                    IsError = true,
-                    ErrorMessage = listErrors
-                };
-                return jSon;
-            }
+                    Account account = this._accountRepo.GetAccountByEmail(User.Identity.Name);
 
-            // Check on length 
-            _checkForLength(viewModel, ref listErrors);
+                    if (account.Password != viewModel.CurrentPassword)
+                        throw new Exception("Incorect current password!");
 
-            if (listErrors.Any())
-            {
-                jSon.Data = new
-                {
-                    IsError = true,
-                    ErrorMessage = listErrors
-                };
-                return jSon;
-            }
-
-            using (TouristContext db = new TouristContext())
-            {
-                var account = db.Accounts.FirstOrDefault(a => a.Email == User.Identity.Name);
-
-                if (!string.Equals(account.Password, viewModel.CurrentPassword))
-                {
-                    listErrors.Add("Incorrect password");
-                }
-
-                if (!string.Equals(viewModel.NewPassword, viewModel.NewPasswordConfirm))
-                {
-                    listErrors.Add("New password and repeated new password did not match.");
-                }
-
-                if (!listErrors.Any())
-                {
                     account.Password = viewModel.NewPassword;
-                    db.Entry(account).State = EntityState.Modified;
-                    db.SaveChanges();
-                }
-                else
-                {
-                    jSon.Data = new
+
+                    this._accountRepo.UpdateAccount(account);
+
+                    jsonResult.Data = new
                     {
-                        IsError = true,
-                        ErrorMessage = listErrors
+                        IsError = false
                     };
-                    return jSon;
+                }
+                catch (Exception ex)
+                {
+                    jsonResult.Data = new
+                    {
+                        IsExceptionError = true,
+                        ErrorMessage = ex.Message
+                    };
                 }
             }
-
-            jSon.Data = new
+            else
             {
-                IsEror = false
-            };
+                ModelState modelState;
 
-            return jSon;
+                string currentPasswordError = null;
+                string newPasswordError = null;
+                string newPasswordConfirmError = null;
+
+                ViewData.ModelState.TryGetValue("CurrentPassword", out modelState);
+                if (modelState.Errors.Count > 0)
+                    currentPasswordError = modelState.Errors[0].ErrorMessage;
+
+                ViewData.ModelState.TryGetValue("NewPassword", out modelState);
+                if (modelState.Errors.Count > 0)
+                    newPasswordError = modelState.Errors[0].ErrorMessage;
+
+                ViewData.ModelState.TryGetValue("NewPasswordConfirm", out modelState);
+                if (modelState.Errors.Count > 0)
+                    newPasswordConfirmError = modelState.Errors[0].ErrorMessage;
+
+                jsonResult.Data = new
+                {
+                    IsError = true,
+                    CurrentPasswordError = currentPasswordError,
+                    NewPasswordError = newPasswordError,
+                    NewPasswordConfirmError = newPasswordConfirmError
+                };
+            }
+
+            return jsonResult;
         }
 
         [Authorize]
@@ -282,5 +311,8 @@ namespace Project.Controllers
             }
         }
         #endregion
+
+        IAccountRepository _accountRepo = null;
+
     }
 }

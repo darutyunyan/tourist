@@ -246,6 +246,7 @@
     <Content Include="Content\Images\Background\pn-5.png" />
     <Content Include="Content\Images\Background\pn-6.png" />
     <Content Include="Content\Images\Background\pn.png" />
+    <Content Include="Content\Reset.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -287,7 +288,6 @@
     <Content Include="Views\ContactUs\Index.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\AccountInformation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
