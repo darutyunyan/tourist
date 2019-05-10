@@ -5,9 +5,14 @@
     <li class="@(Model == "About" ? "active" : null)">@Html.ActionLink("About", "About", "Home")</li>
     <li class="@(Model == "Contact" ? "active" : null)">@Html.ActionLink("Contact us", "Index", "ContactUs")</li>
 </ul>
+@if (Model == "Index"){
+    <form class="navbar-form navbar-left">
+        <select id="selectCity" class="form-control" style="min-width:150px;">
+        </select>
+    </form>
+}
 
-@if (User.Identity.IsAuthenticated)
-{
+@if (User.Identity.IsAuthenticated){
     <ul class="nav navbar-nav navbar-right header-pr">
         <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
         <li class="@(Model == "Settings" ? "active" : null)"><a href="@Url.Action("Settings", "Account")"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>

@@ -28,6 +28,7 @@ namespace Project.Models.Repository
             Debug.Assert(!string.IsNullOrEmpty(account.Country));
 
             this._touristContext.Accounts.Add(account);
+            this._touristContext.SaveChanges();
         }
         
         public void DeleteAccountByEmail(string email) // exception

@@ -8,5 +8,7 @@ namespace Project.Models.Repository
         void AddCity(City city);
 
         void DeleteCityById(Guid id);
+
+        IList<City> GetCities();
     }
 }

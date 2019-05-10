@@ -39,6 +39,11 @@ namespace Project.Models.Repository
             this._touristContext.SaveChanges();
         }
 
+        public IList<City> GetCities()
+        {
+            return _touristContext.Cities.ToList();
+        }
+
         #endregion
 
         #region Private Field
