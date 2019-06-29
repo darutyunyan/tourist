@@ -26,8 +26,8 @@ namespace Project.Models.Repository
             Debug.Assert(!string.IsNullOrEmpty(city.Name));
 
             this._touristContext.Cities.Add(city);
+            this._touristContext.SaveChanges();
         }
-
 
         public void DeleteCityById(Guid id) // exception
         {

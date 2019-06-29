@@ -5,10 +5,10 @@ namespace Project.Models.Repository
 {
     interface IRouteRepository
     {
-        void AddRoute(Route route);
+        void Add(Route route);
 
-        void DeleteRoute(Guid id);
+        void Delete(Guid id);
 
-        IList<Route> GetAllRoutesByCityId(Guid idCity);
+        IList<Route> GetAll(Guid idCity);
     }
 }

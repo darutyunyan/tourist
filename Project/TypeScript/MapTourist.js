@@ -11,12 +11,10 @@ var MapData = /** @class */ (function () {
         }).done(function (data) {
             callback(data);
         }).fail(function (error) {
-            //TODO
         });
     };
-    MapData.prototype.setCenterMapByAddress = function (address) {
-    };
-    MapData.prototype.getAddressByCoordinates = function (latLng, callback) {
+    MapData.prototype.setCenterMapByAddress = function () {
+        alert('qwe');
     };
     return MapData;
 }());
@@ -38,6 +36,7 @@ var MapTourist = /** @class */ (function () {
         this._map.addListener('click', function (e) {
             self.addMarker(e.latLng);
         });
+        //// Set cities in combobox.
         MapData.GetCities(function (data) {
             $.each(data, function (value, key) {
                 if (key == MapTourist.DEFAULT_CITY) {

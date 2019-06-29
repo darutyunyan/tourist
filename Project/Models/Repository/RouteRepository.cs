@@ -19,16 +19,17 @@ namespace Project.Models.Repository
         #endregion
 
         #region Public action
-        public void AddRoute(Route route) // exception
+        public void Add(Route route) // exception
         {
             Debug.Assert(route.Id != Guid.Empty);
             Debug.Assert(route.IdCity != Guid.Empty);
             Debug.Assert(!string.IsNullOrEmpty(route.Coordinates));
 
             this._touristContext.Routes.Add(route);
+            this._touristContext.SaveChanges();
         }
 
-        public void DeleteRoute(Guid id) // exception
+        public void Delete(Guid id) // exception
         {
             Debug.Assert(id != Guid.Empty);
 
@@ -38,7 +39,7 @@ namespace Project.Models.Repository
             this._touristContext.SaveChanges();
         }
 
-        public IList<Route> GetAllRoutesByCityId(Guid idCity) // exception
+        public IList<Route> GetAll(Guid idCity) // exception
         {
             Debug.Assert(idCity != Guid.Empty);
 

@@ -5,12 +5,12 @@ namespace Project.Models.Repository
 {
     interface IAttractionRepository
     {
-        void AddAttraction(Attraction attraction);
+        void Add(Attraction attraction);
 
-        void DeleteAttactionById(Guid id);
+        void Delete(Guid id);
 
-        void UpdateAttraction(Attraction attraction);
+        void Update(Attraction attraction);
 
-        IList<Attraction> GetAllAttractionsByCity(Guid idCity);
+        IList<Attraction> GetAll(Guid idCity);
     }
 }

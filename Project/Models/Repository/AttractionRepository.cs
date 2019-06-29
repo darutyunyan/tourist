@@ -20,7 +20,7 @@ namespace Project.Models.Repository
         #endregion
 
         #region Public action
-        public void AddAttraction(Attraction attraction) // exception
+        public void Add(Attraction attraction) // exception
         {
             Debug.Assert(attraction.Id != Guid.Empty);
             Debug.Assert(attraction.IdCity != Guid.Empty);
@@ -29,10 +29,11 @@ namespace Project.Models.Repository
             Debug.Assert(!string.IsNullOrEmpty(attraction.Coordinates));
 
             this._touristContext.Attractions.Add(attraction);
+            this._touristContext.SaveChanges();
         }
 
 
-        public void DeleteAttactionById(Guid id) // exception
+        public void Delete(Guid id) // exception
         {
             Debug.Assert(id != Guid.Empty);
 
@@ -42,7 +43,7 @@ namespace Project.Models.Repository
             this._touristContext.SaveChanges();
         }
 
-        public void UpdateAttraction(Attraction attraction) // exception
+        public void Update(Attraction attraction) // exception
         {
             Debug.Assert(attraction.Id != Guid.Empty);
             Debug.Assert(attraction.IdCity != Guid.Empty);
@@ -54,7 +55,7 @@ namespace Project.Models.Repository
             this._touristContext.SaveChanges();
         }
 
-        public IList<Attraction> GetAllAttractionsByCity(Guid idCity) // exception
+        public IList<Attraction> GetAll(Guid idCity) // exception
         {
             Debug.Assert(idCity != Guid.Empty);
 

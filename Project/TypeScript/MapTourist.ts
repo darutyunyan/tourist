@@ -1,6 +1,7 @@
 ﻿/// <reference path="../Scripts/typings/jquery/jquery.d.ts" />
 /// <reference path="../Scripts/typings/googlemaps/google.maps.d.ts" />
 
+
 class MapData {
 
     // #region Public actions
@@ -12,28 +13,15 @@ class MapData {
         }).done(function (data) {
             callback(data);
         }).fail(function (error) {
-            //TODO
+           
         });
     }
 
-    public setCenterMapByAddress(address): void {
-
+    public setCenterMapByAddress(): void {
+        alert('qwe');
     }
-
-    public getAddressByCoordinates(latLng, callback) {
-
-    }
-
-    // #endregion
-
-    // #region Static fields
-
-    // #endregion
-
-    // #region Private fields
-
-    // #endregion
 }
+
 
 class MapTourist {
 
@@ -59,6 +47,10 @@ class MapTourist {
             self.addMarker(e.latLng);
         });
 
+
+
+       
+        //// Set cities in combobox.
         MapData.GetCities(function (data) {
             $.each(data, function (value, key) {
                 if (key == MapTourist.DEFAULT_CITY) {
@@ -72,9 +64,7 @@ class MapTourist {
                             .text(key));
                 }
             });
-        });
-
-        
+        }); 
     }
 
     // #endregion
@@ -127,23 +117,23 @@ class MapTourist {
 
     // #region Static fields
 
-    static STATUS_OK: string = 'OK';
+    private static STATUS_OK: string = 'OK';
 
-    static STATUS_ZERO_RESULTS: string = 'ZERO_RESULTS';
+    private static STATUS_ZERO_RESULTS: string = 'ZERO_RESULTS';
 
-    static ERROR_MESSAGE_INCORRECT: string = 'Incorrect city!';
+    private static ERROR_MESSAGE_INCORRECT: string = 'Incorrect city!';
 
-    static ERROR_MESSAGE_SERVER_ERROR: string = 'Server error try later!';
+    private static ERROR_MESSAGE_SERVER_ERROR: string = 'Server error try later!';
 
-    static DEFAULT_CITY = 'Taganrog';
+    private static DEFAULT_CITY = 'Taganrog';
 
-    static DEFAULT_COORDINATES: google.maps.LatLng = new google.maps.LatLng(47.23720460839429, 38.86011685767835);
+    private static DEFAULT_COORDINATES: google.maps.LatLng = new google.maps.LatLng(47.23720460839429, 38.86011685767835);
 
-    static DEFAULT_ZOOM: number = 13;
+    private static DEFAULT_ZOOM: number = 13;
 
-    static MAX_ZOOM: number = 18;
+    private static MAX_ZOOM: number = 18;
 
-    static MIN_ZOON: number = 12;
+    private static MIN_ZOON: number = 12;
 
     // #endregion
 

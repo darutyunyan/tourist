@@ -211,10 +211,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ContactUsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MapController.cs" />
     <Compile Include="Filters\ExceptionLoggerAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -232,7 +232,9 @@
     <Compile Include="Models\Repository\IRouteRepository.cs" />
     <Compile Include="Models\Repository\RouteRepository.cs" />
     <Compile Include="Models\Route.cs" />
+    <Compile Include="Models\Services\IMapManagmentService.cs" />
     <Compile Include="Models\Services\Mail.cs" />
+    <Compile Include="Models\Services\MapManagmentService.cs" />
     <Compile Include="Models\TouristContext.cs" />
     <Compile Include="ViewModel\AccountInformationViewModel.cs" />
     <Compile Include="ViewModel\ChagePasswordViewModel.cs" />
@@ -242,36 +244,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Images\Background\pn-1.png" />
-    <Content Include="Content\Images\Background\pn-2.png" />
-    <Content Include="Content\Images\Background\pn-3.png" />
-    <Content Include="Content\Images\Background\pn-4.png" />
-    <Content Include="Content\Images\Background\pn-5.png" />
-    <Content Include="Content\Images\Background\pn-6.png" />
-    <Content Include="Content\Images\Background\pn.png" />
     <Content Include="Content\Reset.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -295,20 +280,16 @@
     <Content Include="Views\ContactUs\Index.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Map\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -318,6 +299,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\typings\googlemaps\google.maps.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+    <TypeScriptCompile Include="TypeScript\Admin\MapAdmin.ts" />
     <TypeScriptCompile Include="TypeScript\MapTourist.ts" />
   </ItemGroup>
   <ItemGroup>
