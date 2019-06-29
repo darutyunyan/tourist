@@ -11,10 +11,10 @@ namespace Project.Controllers
     {
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated)
-            {
+            //if (User.Identity.IsAuthenticated)
+            //{
                 return View();
-            }
+            //}
 
             return RedirectToAction("Login", "Account");
         }

@@ -3,17 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    @if (IsSectionDefined("Title"))
-    {
-        <title>
-            @RenderSection("Title")
-        </title>
-    }
-    else
-    {
-        <title>Tourist</title>
-    }
+    <title>Tourist</title>
 
     @* JS *@
     @Scripts.Render("~/bundles/scripts")
@@ -22,31 +12,9 @@
     @Styles.Render("~/Content/styles")
 </head>
 <body>
-    <div class="navbar navbar-inverse border-radius-none mb-0">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Tourist", "Index", "Home", null, new { @class = "navbar-brand header-pl" })
-            </div>
-            <div class="collapse navbar-collapse" id="myNavbar">
-                @if (IsSectionDefined("HeaderMenu"))
-                {
-                    @RenderSection("HeaderMenu")
-                }
-                else
-                {
-                    @Html.Partial("HeaderMenu", "Index")
-                }
-            </div>
-        </div>
-    </div>
+    @RenderSection("mainContent", required: false)
 
-    @RenderSection("Content", required: false)
-    <div style="height:70px;"></div>
+    <div style="height:55px;"></div>
     <div class="container-fluid footer-content">
         <span class="footer-text ">
             &copy;  Copyright 2018 - 2019. Tourist.<br />
@@ -56,6 +24,6 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB7ZMMLBCvl7qIv55Sk7PAWQCDxYLfzF0g"></script>
 
-    @RenderSection("Scripts", required: false)
+    @RenderSection("scripts", required: false)
 </body>
 </html>
