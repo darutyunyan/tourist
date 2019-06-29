@@ -236,6 +236,7 @@
     <Compile Include="Models\Services\Mail.cs" />
     <Compile Include="Models\Services\MapManagmentService.cs" />
     <Compile Include="Models\TouristContext.cs" />
+    <Compile Include="ViewModel\IndexViewModel.cs" />
     <Compile Include="ViewModel\AccountInformationViewModel.cs" />
     <Compile Include="ViewModel\ChagePasswordViewModel.cs" />
     <Compile Include="ViewModel\ContactUsViewModel.cs" />
@@ -272,7 +273,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\BaseMaster.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
@@ -282,6 +283,7 @@
     <Content Include="Views\ContactUs\Index.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Shared\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

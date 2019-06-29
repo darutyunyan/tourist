@@ -1,57 +1,82 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model Project.ModelView.IndexViewModel
+
+@{
+    Layout = "~/Views/Shared/BaseMaster.cshtml";
 }
 
-
 @section mainContent {
-    <div class="navbar navbar-inverse border-radius-none mb-0">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Tourist", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <ul class="nav navbar-nav navbar-right header-pr">
-                        <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
-                        <li><a href="@Url.Action("Settings", "Account")"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-                        <li><a href="@Url.Action("LogOut", "Account")"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+    <div id="app">
+        <div class="navbar navbar-inverse border-radius-none mb-0">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Tourist", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     </ul>
-                }
-                else
-                {
-                    <ul class="nav navbar-nav navbar-right header-pr">
-                        <li><a href="@Url.Action("SignUp", "Account")"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                        <li><a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                    </ul>
-                }
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <ul class="nav navbar-nav navbar-right header-pr">
+                            <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
+                            <li><a href="@Url.Action("Settings", "Account")"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                            <li><a href="@Url.Action("LogOut", "Account")"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="nav navbar-nav navbar-right header-pr">
+                            <li><a href="@Url.Action("SignUp", "Account")"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                            <li><a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        </ul>
+                    }
+                    <form class="navbar-form navbar-right">
+                        <select class="form-control">
+                            @foreach (var item in Model.Cities)
+                            {
+                                <option>@item</option>
+                            }
+                        </select>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="container-fluid pl-0 pr-0">
-        <div id="map"></div>
+        <div class="container-fluid pl-0 pr-0">
+            <div id="map"></div>
+            @Html.Partial("Login")
+        </div>
     </div>
 }
 
 @section scripts{
     <script>
-        var map;
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: -34.397, lng: 150.644 },
-                zoom: 8
-            });
-        }
-        initMap();
+        var app = new Vue({
+            el: '#app',
+            data: {
+                map: null,
+
+                TAGANROG_COORDINATES: new google.maps.LatLng(47.23720460839429, 38.86011685767835),
+                DEFAULT_ZOOM: 13
+            },
+            mounted() {
+                this.initMap();
+            },
+            methods: {
+                initMap: function () {
+                    this.map = new google.maps.Map(document.getElementById('map'), {
+                        center: this.TAGANROG_COORDINATES,
+                        zoom: this.DEFAULT_ZOOM
+                    });
+                }
+            }
+        });
     </script>
 }
