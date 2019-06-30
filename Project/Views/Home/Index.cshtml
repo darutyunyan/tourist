@@ -22,27 +22,22 @@
                         <li>@Html.ActionLink("About", "About", "Home")</li>
                         <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     </ul>
-
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <ul class="nav navbar-nav navbar-right header-pr">
-                            <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
-                            <li><a href="@Url.Action("Settings", "Account")"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-                            <li><a href="@Url.Action("LogOut", "Account")"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
-                        </ul>
-                    }
-                    else
-                    {
-                        <ul class="nav navbar-nav navbar-right header-pr">
-                            <li><a href="@Url.Action("SignUp", "Account")"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                            <li><a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-                        </ul>
-                    }
-                    <form class="navbar-form navbar-right">
+                    <ul v-if="isAuthenticated" class="nav navbar-nav navbar-right header-pr">
+                        <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
+                        <li><a href="@Url.Action("Settings", "Account")"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                        <li><a href="@Url.Action("LogOut", "Account")"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+                    </ul>
+                 
+                    <ul v-else class="nav navbar-nav navbar-right header-pr">
+                        <li><a href="@Url.Action("SignUp", "Account")"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    </ul>
+              
+                    <form v-if="isAuthenticated" class="navbar-form navbar-right">
                         <select class="form-control">
-                            @foreach (var item in Model.Cities)
+                            @foreach (var city in Model.Cities)
                             {
-                                <option>@item</option>
+                                <option>@city</option>
                             }
                         </select>
                     </form>
@@ -62,18 +57,22 @@
             el: '#app',
             data: {
                 map: null,
+                isAuthenticated: null,
 
                 TAGANROG_COORDINATES: new google.maps.LatLng(47.23720460839429, 38.86011685767835),
                 DEFAULT_ZOOM: 13
             },
             mounted() {
+                this.isAuthenticated = '@Model.IsAuthenticated' === 'True' ? true : false;
+
                 this.initMap();
             },
             methods: {
                 initMap: function () {
-                    this.map = new google.maps.Map(document.getElementById('map'), {
-                        center: this.TAGANROG_COORDINATES,
-                        zoom: this.DEFAULT_ZOOM
+                    var self = this;
+                    self.map = new google.maps.Map(document.getElementById('map'), {
+                        center: self.TAGANROG_COORDINATES,
+                        zoom: self.DEFAULT_ZOOM
                     });
                 }
             }

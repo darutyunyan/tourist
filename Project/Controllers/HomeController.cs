@@ -39,17 +39,6 @@ namespace Project.Controllers
             
             return View(response);
         }
-        
-        public ActionResult About()
-        {
-            return View();
-        }
-        
-        public ActionResult Contact()
-        {
-            return View();
-        }
-
 
         private CityRepository _cityRepo = null;
     }
