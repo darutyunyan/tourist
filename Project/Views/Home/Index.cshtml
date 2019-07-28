@@ -5,6 +5,8 @@
 }
 
 @section mainContent {
+    @Html.Partial("Map")
+    @Html.Partial("About")
     <div id="app">
         <div class="navbar navbar-inverse border-radius-none mb-0">
             <div class="container-fluid">
@@ -18,21 +20,21 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                        <li>@Html.ActionLink("About", "About", "Home")</li>
-                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                        <li><a v-bind:class="{ active: selectedView == MAP_VIEW }" v-on:click="selectedView = MAP_VIEW" href="#">Home</a></li>
+                        <li><a v-bind:class="{ active: selectedView == ABOUT_VIEW }" v-on:click="selectedView = ABOUT_VIEW" href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
                     </ul>
-                    <ul v-if="isAuthenticated" class="nav navbar-nav navbar-right header-pr">
+                    <ul v-if="isAuthenticated" class="nav navbar-nav navbar-right">
                         <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
-                        <li><a href="@Url.Action("Settings", "Account")"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-                        <li><a href="@Url.Action("LogOut", "Account")"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
                     </ul>
-                 
-                    <ul v-else class="nav navbar-nav navbar-right header-pr">
-                        <li><a href="@Url.Action("SignUp", "Account")"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                        <li><a href="@Url.Action("Login", "Account")"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+
+                    <ul v-else class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     </ul>
-              
+
                     <form v-if="isAuthenticated" class="navbar-form navbar-right">
                         <select class="form-control">
                             @foreach (var city in Model.Cities)
@@ -45,35 +47,40 @@
             </div>
         </div>
         <div class="container-fluid pl-0 pr-0">
-            <div id="map"></div>
-            @Html.Partial("Login")
+            <component v-bind:is="selectedView" v-bind="viewProps"></component>
         </div>
     </div>
 }
 
 @section scripts{
-    <script>
+    <script type="text/javascript">
         var app = new Vue({
             el: '#app',
+            components: {
+                'map-view': mapView,
+                'about-view': aboutView
+            },
             data: {
-                map: null,
                 isAuthenticated: null,
+                selectedView: null,
+                viewProps: null,
 
-                TAGANROG_COORDINATES: new google.maps.LatLng(47.23720460839429, 38.86011685767835),
-                DEFAULT_ZOOM: 13
+                // constants
+                MAP_VIEW: 'map-view',
+                ABOUT_VIEW: 'about-view'
             },
             mounted() {
                 this.isAuthenticated = '@Model.IsAuthenticated' === 'True' ? true : false;
 
-                this.initMap();
+                if (this.isAuthenticated) {
+                    this.showMap();
+                } else {
+                    this.showMap();
+                }
             },
             methods: {
-                initMap: function () {
-                    var self = this;
-                    self.map = new google.maps.Map(document.getElementById('map'), {
-                        center: self.TAGANROG_COORDINATES,
-                        zoom: self.DEFAULT_ZOOM
-                    });
+                showMap: function () {
+                    this.selectedView = this.MAP_VIEW;
                 }
             }
         });

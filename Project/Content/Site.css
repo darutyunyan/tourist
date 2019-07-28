@@ -68,6 +68,11 @@
 .text-center {
     text-align: center;
 }
+
+.active {
+    background-color: black !important;
+}
+
 /* End common styles */
 
 /* Map styles*/
@@ -82,10 +87,6 @@
 
 .header-pl {
     padding-left: 50px;
-}
-
-.header-pr {
-    padding-right: 50px;
 }
 
 @media (max-width: 768px) {

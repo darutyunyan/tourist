@@ -1,0 +1,30 @@
+﻿<template id="map-view">
+    <div>
+        <div id="map"></div>
+    </div>
+</template>
+
+<script type="text/javascript">
+    var mapView = {
+        data: function () {
+            return {
+                map: null,
+                TAGANROG_COORDINATES: new google.maps.LatLng(47.23720460839429, 38.86011685767835),
+                DEFAULT_ZOOM: 13
+            }
+        },
+        mounted() {
+            this.init();
+        },
+        methods:{
+            init: function() {
+                var self = this;
+                self.map = new google.maps.Map(document.getElementById('map'), {
+                    center: self.TAGANROG_COORDINATES,
+                    zoom: self.DEFAULT_ZOOM
+                });
+            }
+        },
+        template: '#map-view'
+    };
+</script>
