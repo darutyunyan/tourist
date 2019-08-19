@@ -7,6 +7,9 @@
 @section mainContent {
     @Html.Partial("Map")
     @Html.Partial("About")
+    @Html.Partial("ContactUs")
+    @Html.Partial("Login")
+    @Html.Partial("SignUp")
     <div id="app">
         <div class="navbar navbar-inverse border-radius-none mb-0">
             <div class="container-fluid">
@@ -20,34 +23,34 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a v-bind:class="{ active: selectedView == MAP_VIEW }" v-on:click="selectedView = MAP_VIEW" href="#">Home</a></li>
+                        <li><a v-bind:class="{ active: selectedView == MAP_VIEW }" v-on:click="showMap" href="#">Home</a></li>
                         <li><a v-bind:class="{ active: selectedView == ABOUT_VIEW }" v-on:click="selectedView = ABOUT_VIEW" href="#">About</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a v-bind:class="{ active: selectedView == CONTACT_US_VIEW }" v-on:click="selectedView = CONTACT_US_VIEW" href="#">Contact</a></li>
                     </ul>
                     <ul v-if="isAuthenticated" class="nav navbar-nav navbar-right">
                         <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
                         <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
+                        <li><a v-on:click="logOut" href="#"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
                     </ul>
-
                     <ul v-else class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                        <li><a v-bind:class="{ active: selectedView == SIGN_UP_VIEW }" v-on:click="selectedView = SIGN_UP_VIEW" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                        <li><a v-bind:class="{ active: selectedView == LOGIN_VIEW }" v-on:click="selectedView = LOGIN_VIEW" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     </ul>
-
-                    <form v-if="isAuthenticated" class="navbar-form navbar-right">
+                    <div v-if="isAuthenticated" class="navbar-form navbar-right">
                         <select class="form-control">
                             @foreach (var city in Model.Cities)
                             {
                                 <option>@city</option>
                             }
                         </select>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="container-fluid pl-0 pr-0">
-            <component v-bind:is="selectedView" v-bind="viewProps"></component>
+            <component v-on:show-map="showMap" 
+                       v-bind:is="selectedView" 
+                       v-bind="viewProps"></component>
         </div>
     </div>
 }
@@ -58,29 +61,56 @@
             el: '#app',
             components: {
                 'map-view': mapView,
-                'about-view': aboutView
+                'about-view': aboutView,
+                'contact-us-view': contactUsView,
+                'login-view': loginView,
+                'sign-up-view': signUpView
             },
             data: {
                 isAuthenticated: null,
+                accountEmail: null,
                 selectedView: null,
                 viewProps: null,
 
                 // constants
                 MAP_VIEW: 'map-view',
-                ABOUT_VIEW: 'about-view'
+                ABOUT_VIEW: 'about-view',
+                CONTACT_US_VIEW: 'contact-us-view',
+                LOGIN_VIEW: 'login-view',
+                SIGN_UP_VIEW: 'sign-up-view'
+            },
+            watch: {
+                isAuthenticated: function (val) {
+                    if (val) {
+                        this.selectedView = this.MAP_VIEW;
+                    } else {
+                        this.selectedView = this.LOGIN_VIEW;
+                    }
+                }
             },
             mounted() {
                 this.isAuthenticated = '@Model.IsAuthenticated' === 'True' ? true : false;
-
-                if (this.isAuthenticated) {
-                    this.showMap();
-                } else {
-                    this.showMap();
-                }
             },
-            methods: {
+            methods: { 
                 showMap: function () {
-                    this.selectedView = this.MAP_VIEW;
+                    if (this.isAuthenticated) {
+                        this.selectedView = this.MAP_VIEW;
+                    } else {
+                        this.selectedView = this.LOGIN_VIEW;
+                    }
+                },
+                logOut: function () {
+                    var self = this;
+
+                    $.ajax({
+                        url: 'Home/LogOut',
+                        type: 'GET'
+                    }).done(function (response) {
+                        self.isAuthenticated = false;
+                    }).fail(function (error) {
+                        console.log(error)
+                        //TODO
+                    });
                 }
             }
         });

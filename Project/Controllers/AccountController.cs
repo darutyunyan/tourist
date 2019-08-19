@@ -1,4 +1,5 @@
-﻿using Project.Filters;
+﻿using Project.Dto;
+using Project.Filters;
 using Project.Models;
 using Project.Models.Repository;
 using Project.ModelView;
@@ -24,112 +25,6 @@ namespace Project.Controllers
 
         #region Action methods
 
-        public ActionResult SignUp()
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult SignUp(RegisterViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                Account account = null;
-
-
-                account = this._accountRepo.GetAccountByEmail(model.Email);
-
-                if (account == null)
-                {
-                    account = new Account
-                    {
-                        Id = Guid.NewGuid(),
-                        Email = model.Email,
-                        Password = model.Password,
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Country = model.Country
-                    };
-
-                    this._accountRepo.AddAccount(account);
-
-                    if (this._accountRepo.IsLogged(account.Email, account.Password))
-                    {
-                        FormsAuthentication.SetAuthCookie(model.Email, true);
-                        return RedirectToAction("Index", "Home");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Account with that email already exists!");
-                }
-
-            }
-            return View(model);
-        }
-
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                bool isAccountLogged = false;
-
-                isAccountLogged = this._accountRepo.IsLogged(model.Email, model.Password);
-
-
-                if (isAccountLogged)
-                {
-                    FormsAuthentication.SetAuthCookie(model.Email, true);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Login or password incorrect!");
-                }
-            }
-            return View(model);
-        }
-
-        [Authorize]
-        [HttpGet]
-        public ActionResult Settings()
-        {
-            AccountInformationViewModel actionResult = null;
-
-            try
-            {
-                Account account = this._accountRepo.GetAccountByEmail(User.Identity.Name); // exception
-
-                AccountInformationViewModel accountInformation = new AccountInformationViewModel()
-                {
-
-                    FirstName = account.FirstName,
-                    LastName = account.LastName,
-                    Country = account.Country
-                };
-
-
-                actionResult = accountInformation;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-            return View(actionResult);
-        }
-
         [HttpPost]
         public ActionResult ChangeAccountInformation(AccountInformationViewModel viewModel)
         {
@@ -152,7 +47,7 @@ namespace Project.Controllers
                     account.FirstName = viewModel.FirstName;
                     account.LastName = viewModel.LastName;
                     account.Country = viewModel.Country;
-                    
+
                     this._accountRepo.UpdateAccount(account);
 
                     jsonResult.Data = new
@@ -200,7 +95,6 @@ namespace Project.Controllers
 
             return jsonResult;
         }
-
 
         [HttpPost]
         public ActionResult ChangePassword(ChagePasswordViewModel viewModel)
@@ -273,46 +167,8 @@ namespace Project.Controllers
             return jsonResult;
         }
 
-        [Authorize]
-        public ActionResult LogOut()
-        {
-            FormsAuthentication.SignOut();
-
-            return RedirectToAction("Login", "Account");
-        }
-
-        #endregion
-
-        #region Private methods
-
-        private void _checkForEmpty(ChagePasswordViewModel viewModel, ref List<string> listErrors)
-        {
-            if (string.IsNullOrEmpty(viewModel.CurrentPassword))
-            {
-                listErrors.Add("Current password is required");
-            }
-
-            if (string.IsNullOrEmpty(viewModel.NewPassword))
-            {
-                listErrors.Add("New password is required");
-            }
-
-            if (string.IsNullOrEmpty(viewModel.NewPasswordConfirm))
-            {
-                listErrors.Add("New password repeated is required");
-            }
-        }
-
-        private void _checkForLength(ChagePasswordViewModel viewModel, ref List<string> listErrors)
-        {
-            if (viewModel.NewPassword.Count() < 6)
-            {
-                listErrors.Add("New password contains less than 6 characters");
-            }
-        }
         #endregion
 
         IAccountRepository _accountRepo = null;
-
     }
 }

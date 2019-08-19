@@ -13,6 +13,10 @@
     outline:none !important;
 }
 
+.ml-20 {
+    margin-left: 20px;
+}
+
 .mb-0 {
     margin-bottom: initial;
 }
@@ -163,3 +167,11 @@
 }
 
 /* End error validation*/
+
+.about-page h2{
+    text-align: center;
+}
+
+.about-page p{
+    text-align: justify;
+}

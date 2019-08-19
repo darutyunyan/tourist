@@ -209,6 +209,11 @@
     <Compile Include="Controllers\ContactUsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Dto\GetContactUsInformationResponse.cs" />
+    <Compile Include="Dto\LoginRequest.cs" />
+    <Compile Include="Dto\LoginResponse.cs" />
+    <Compile Include="Dto\Response.cs" />
+    <Compile Include="Dto\SignUpRequest.cs" />
     <Compile Include="Filters\ExceptionLoggerAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -239,6 +244,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\Tourist.mdf" />
+    <Content Include="App_Data\Tourist_log.ldf">
+      <DependentUpon>Tourist.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
@@ -271,17 +280,16 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\Forbidden.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\SignUp.cshtml" />
-    <Content Include="Views\ContactUs\Index.cshtml" />
+    <Content Include="Views\Home\SignUp.cshtml" />
+    <Content Include="Views\Home\ContactUs.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Shared\Login.cshtml" />
-    <Content Include="Views\Shared\Map.cshtml" />
-    <Content Include="Views\Shared\About.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Map.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Views\ContactUs\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

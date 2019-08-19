@@ -1,0 +1,59 @@
+﻿<template id="login-view">
+    <div>
+        <div class="container">
+            <div class="row mt-20">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-right">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" v-model="email">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" class="form-control" v-model="password">
+                    </div>
+                    <br />
+                    <button type="button" class="btn btn-primary pull-right" v-on:click="logIn">Log In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+    var loginView = {
+        data: function () {
+            return {
+                email: null,
+                password: null
+            }
+        },
+        mounted() {
+           
+        },
+        methods: {
+            logIn: function () {
+                var self = this;
+
+                var request = {};
+                request.Email = self.email;
+                request.Password = self.password;
+    
+                $.ajax({
+                    url: 'Home/Login',
+                    type: 'POST',
+                    data: {
+                        request: request
+                    }
+
+                }).done(function (response) {
+                    self.$root.isAuthenticated = true;
+                    self.$emit("show-map");
+                }).fail(function (error) {
+                    console.log(error)
+                    //TODO
+                });
+            }
+        },
+        template: '#login-view'
+    };
+</script>
