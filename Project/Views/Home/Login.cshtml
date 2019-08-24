@@ -44,10 +44,12 @@
                     data: {
                         request: request
                     }
-
                 }).done(function (response) {
-                    self.$root.isAuthenticated = true;
-                    self.$emit("show-map");
+                    if (response.IsLogged) {
+                        self.$root.isAuthenticated = true;
+                        self.$root.accountEmail = self.email;
+                        self.$emit("show-map");
+                    }
                 }).fail(function (error) {
                     console.log(error)
                     //TODO

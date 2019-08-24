@@ -73,16 +73,12 @@
     text-align: center;
 }
 
-.active {
-    background-color: black !important;
-}
-
 /* End common styles */
 
 /* Map styles*/
 
 #map {
-    height: 624px !important;
+    height: 600px !important;
 }
 
 /* End map styles*/

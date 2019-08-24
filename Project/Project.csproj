@@ -209,7 +209,11 @@
     <Compile Include="Controllers\ContactUsController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Dto\ChangePasswordResponse.cs" />
+    <Compile Include="Dto\ChangePasswordRequest.cs" />
+    <Compile Include="Dto\ChangeUserInformationResponse.cs" />
     <Compile Include="Dto\GetContactUsInformationResponse.cs" />
+    <Compile Include="Dto\ChangeUserInformationRequest.cs" />
     <Compile Include="Dto\LoginRequest.cs" />
     <Compile Include="Dto\LoginResponse.cs" />
     <Compile Include="Dto\Response.cs" />
@@ -282,15 +286,12 @@
     <Content Include="Views\Error\Forbidden.cshtml" />
     <Content Include="Views\Home\SignUp.cshtml" />
     <Content Include="Views\Home\ContactUs.cshtml" />
-    <Content Include="Views\Account\Settings.cshtml" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Map.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Settings.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\ContactUs\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>

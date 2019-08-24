@@ -23,7 +23,6 @@
                         <label>Text</label>
                         <textarea type="text" class="form-control" rows="8" v-model="text"></textarea>
                     </div>
-
                     <button type="button" class="btn btn-primary pull-right" v-on:click="">Send</button>
                 </div>
             </div>
@@ -52,7 +51,6 @@
                     url: 'Home/GetContactUsInformation',
                     type: 'GET'
                 }).done(function (response) {
-                    console.log(response);
                     self.firstName = response.FirstName;
                     self.lastName = response.LastName;
                     self.email= response.Email;

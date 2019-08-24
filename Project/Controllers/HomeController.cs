@@ -19,6 +19,10 @@ namespace Project.Controllers
             _accountRepo = new AccountRepository(dbContect);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             IndexViewModel response = new IndexViewModel();
@@ -39,6 +43,11 @@ namespace Project.Controllers
             return View(response);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SignUp(SignUpRequest request)
         {
@@ -77,6 +86,11 @@ namespace Project.Controllers
             return Json(response);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Login(LoginRequest request)
         {
@@ -97,7 +111,10 @@ namespace Project.Controllers
             return Json(response);
         }
 
-        [HttpGet]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOut()
         {
             Response repones = new Response();
@@ -106,7 +123,10 @@ namespace Project.Controllers
             return Json(repones, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult GetContactUsInformation()
         {
             GetContactUsInformationResponse response = new GetContactUsInformationResponse();
@@ -123,6 +143,7 @@ namespace Project.Controllers
                             response.FirstName = account.FirstName;
                             response.LastName = account.LastName;
                             response.Email = account.Email;
+                            response.Country = account.Country;
                         }
                     }
 
@@ -136,36 +157,54 @@ namespace Project.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize]
-        [HttpGet]
-        public ActionResult Settings()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public ActionResult ChangeUserInformation(ChangeUserInformationRequest request)
         {
-            AccountInformationViewModel actionResult = null;
+            ChangeUserInformationResponse response = new ChangeUserInformationResponse();
 
-            try
+            if (ModelState.IsValid)
             {
-                Account account = this._accountRepo.GetAccountByEmail(User.Identity.Name); // exception
+                Account account = this._accountRepo.GetAccountByEmail(User.Identity.Name);
 
-                AccountInformationViewModel accountInformation = new AccountInformationViewModel()
-                {
+                account.FirstName = request.FirstName;
+                account.LastName = request.LastName;
+                account.Country = request.Country;
 
-                    FirstName = account.FirstName,
-                    LastName = account.LastName,
-                    Country = account.Country
-                };
-
-                actionResult = accountInformation;
-            }
-            catch (Exception)
-            {
-                throw;
+                this._accountRepo.UpdateAccount(account);
             }
 
-            return View(actionResult);
+            return Json(response);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public ActionResult ChangePassword(ChangePasswordRequest request)
+        {
+            ChangeUserInformationResponse response = new ChangeUserInformationResponse();
+
+            if (ModelState.IsValid)
+            {
+
+            }
+
+            return Json(response);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         private CityRepository _cityRepo = null;
 
+        /// <summary>
+        /// 
+        /// </summary>
         private IAccountRepository _accountRepo = null;
     }
 }

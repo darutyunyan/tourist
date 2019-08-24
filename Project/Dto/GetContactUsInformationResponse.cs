@@ -16,5 +16,10 @@
         /// Get or set email.
         /// </summary>
         public string Email { get; set; }
+
+        /// <summary>
+        /// Get or set country.
+        /// </summary>
+        public string Country { get; set; }
     }
 }

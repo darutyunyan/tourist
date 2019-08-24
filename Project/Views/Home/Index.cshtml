@@ -10,6 +10,8 @@
     @Html.Partial("ContactUs")
     @Html.Partial("Login")
     @Html.Partial("SignUp")
+    @Html.Partial("Settings")
+
     <div id="app">
         <div class="navbar navbar-inverse border-radius-none mb-0">
             <div class="container-fluid">
@@ -25,18 +27,18 @@
                     <ul class="nav navbar-nav">
                         <li><a v-bind:class="{ active: selectedView == MAP_VIEW }" v-on:click="showMap" href="#">Home</a></li>
                         <li><a v-bind:class="{ active: selectedView == ABOUT_VIEW }" v-on:click="selectedView = ABOUT_VIEW" href="#">About</a></li>
-                        <li><a v-bind:class="{ active: selectedView == CONTACT_US_VIEW }" v-on:click="selectedView = CONTACT_US_VIEW" href="#">Contact</a></li>
+                        <li><a v-bind:class="{ active: selectedView == CONTACT_US_VIEW }" v-on:click="selectedView = CONTACT_US_VIEW" href="#">Contact us</a></li>
                     </ul>
                     <ul v-if="isAuthenticated" class="nav navbar-nav navbar-right">
-                        <li class="pr-10 hidden-xs hidden-sm"><span class="email-style">@User.Identity.Name</span></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                        <li class="pr-10"><span class="email-style">{{ accountEmail }}</span></li>
+                        <li><a v-bind:class="{ active: selectedView == SETTINGS_VIEW }" v-on:click="selectedView = SETTINGS_VIEW" href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
                         <li><a v-on:click="logOut" href="#"><span class="glyphicon glyphicon-user"></span> Log out</a></li>
                     </ul>
                     <ul v-else class="nav navbar-nav navbar-right">
                         <li><a v-bind:class="{ active: selectedView == SIGN_UP_VIEW }" v-on:click="selectedView = SIGN_UP_VIEW" href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                         <li><a v-bind:class="{ active: selectedView == LOGIN_VIEW }" v-on:click="selectedView = LOGIN_VIEW" href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                     </ul>
-                    <div v-if="isAuthenticated" class="navbar-form navbar-right">
+                    <div v-if="isShowCities" class="navbar-form navbar-right">
                         <select class="form-control">
                             @foreach (var city in Model.Cities)
                             {
@@ -48,8 +50,8 @@
             </div>
         </div>
         <div class="container-fluid pl-0 pr-0">
-            <component v-on:show-map="showMap" 
-                       v-bind:is="selectedView" 
+            <component v-on:show-map="showMap"
+                       v-bind:is="selectedView"
                        v-bind="viewProps"></component>
         </div>
     </div>
@@ -64,7 +66,8 @@
                 'about-view': aboutView,
                 'contact-us-view': contactUsView,
                 'login-view': loginView,
-                'sign-up-view': signUpView
+                'sign-up-view': signUpView,
+                'settings-view': settingsView
             },
             data: {
                 isAuthenticated: null,
@@ -77,7 +80,8 @@
                 ABOUT_VIEW: 'about-view',
                 CONTACT_US_VIEW: 'contact-us-view',
                 LOGIN_VIEW: 'login-view',
-                SIGN_UP_VIEW: 'sign-up-view'
+                SIGN_UP_VIEW: 'sign-up-view',
+                SETTINGS_VIEW: 'settings-view'
             },
             watch: {
                 isAuthenticated: function (val) {
@@ -88,10 +92,16 @@
                     }
                 }
             },
+            computed: {
+                isShowCities: function () {
+                    return this.selectedView == this.MAP_VIEW
+                }
+            },
             mounted() {
                 this.isAuthenticated = '@Model.IsAuthenticated' === 'True' ? true : false;
+                this.accountEmail = '@User.Identity.Name';
             },
-            methods: { 
+            methods: {
                 showMap: function () {
                     if (this.isAuthenticated) {
                         this.selectedView = this.MAP_VIEW;

@@ -1,0 +1,118 @@
+﻿<template id="settings-view">
+    <div>
+        <div class="container">
+            <div class="row mt-20">
+                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 pull-right">
+                    <ul class="nav nav-pills">
+                        <li v-bind:class="{ active: isModeAccount }" v-on:click="isModeAccount = true"><a href="#">Account</a></li>
+                        <li v-bind:class="{ active: !isModeAccount }" v-on:click="isModeAccount = false"><a href="#">Password</a></li>
+                    </ul>
+                    <br />
+                    <div v-if="isModeAccount" class="form-group">
+                        <label>First name</label>
+                        <input type="text" class="form-control" v-model="firstName">
+                    </div>
+                    <div v-if="isModeAccount" class="form-group">
+                        <label>Last name</label>
+                        <input type="text" class="form-control" v-model="lastName">
+                    </div>
+                    <div v-if="isModeAccount" class="form-group">
+                        <label>Country</label>
+                        <input type="text" class="form-control" v-model="country">
+                    </div>
+                    <div v-if="!isModeAccount" class="form-group">
+                        <label>Current password</label>
+                        <input type="password" class="form-control" v-model="password">
+                    </div>
+                    <div v-if="!isModeAccount" class="form-group">
+                        <label>New password</label>
+                        <input type="password" class="form-control" v-model="newPassword">
+                    </div>
+                    <div v-if="!isModeAccount" class="form-group">
+                        <label>New password confirm</label>
+                        <input type="password" class="form-control" v-model="newPasswordConfirm">
+                    </div>
+                    <br />
+                    <button v-if="isModeAccount" type="button" class="btn btn-primary pull-right" v-on:click="saveUserInformation">Save</button>
+                    <button v-else type="button" class="btn btn-primary pull-right" v-on:click="savePassword">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+    var settingsView = {
+        data: function () {
+            return {
+                firstName: null,
+                lastName: null,
+                country: null,
+                password: null,
+                newPassword: null,
+                newPasswordConfirm: null,
+                isModeAccount: true,
+            }
+        },
+        mounted() {
+            this.loadData();
+        },
+        methods: {
+            loadData: function () {
+                var self = this;
+                $.ajax({
+                    url: 'Home/GetContactUsInformation',
+                    type: 'GET'
+                }).done(function (response) {
+                    self.firstName = response.FirstName;
+                    self.lastName = response.LastName;
+                    self.country = response.Country;
+                }).fail(function (error) {
+                    //TODO
+                });
+            },
+            saveUserInformation: function () {
+                var self = this;
+
+                var request = {};
+                request.FirstName = self.firstName;
+                request.LastName = self.lastName;
+                request.Country = self.country;
+
+                $.ajax({
+                    url: 'Home/ChangeUserInformation',
+                    type: 'POST',
+                    data: {
+                        request: request
+                    }
+                }).done(function (response) {
+                    console.log('good')
+                }).fail(function (error) {
+                    console.log('bad')
+                    //TODO
+                });
+            },
+            savePassword: function () {
+                var self = this;
+
+                var request = {};
+                request.Password = self.password;
+                request.NewPassword = self.NewPassword;
+                request.NewPasswordConfirm = self.newPasswordConfirm;
+
+                $.ajax({
+                    url: 'Home/ChangePassword',
+                    type: 'POST',
+                    data: {
+                        request: request
+                    }
+                }).done(function (response) {
+
+                }).fail(function (error) {
+                    //TODO
+                });
+            }
+        },
+        template: '#settings-view'
+    };
+</script>
